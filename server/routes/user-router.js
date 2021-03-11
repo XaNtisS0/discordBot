@@ -5,12 +5,14 @@ const UserCtrl = require("../controllers/user-ctrl");
 const router = express.Router();
 
 //get all users
-router.get("/:serverId/users");
+router.get("/", UserCtrl.getUsers);
 //get single user
-router.get("/:serverId/users/:userId");
+router.get("/:userId", UserCtrl.getUserById);
 //post user on server
-router.post("/:serverId/users");
+router.post("/", UserCtrl.createUser);
 //update user on server
-router.put("/:serverId/users/:userId");
+router.put("/:userId", UserCtrl.updateUser);
 //detele user on server
-router.delete("/:serverId/users/:userId");
+router.delete("/:userId", UserCtrl.deleteUser);
+
+module.exports = router;
