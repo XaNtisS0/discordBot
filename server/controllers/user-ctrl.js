@@ -57,3 +57,45 @@ createUser = (req, res) => {
       });
     });
 };
+
+updateUser = async (req, res) => {
+  const body = req.body;
+
+  if (!body) {
+    return res.status(400).json({
+      success: false,
+      error: "You must provide a body to update",
+    });
+  }
+
+  User.findOne({ _id: req.params.userId }, (err, user) => {
+    if (err) {
+      return res.status(404).json({
+        err,
+        message: "User not found!",
+      });
+    }
+
+    const { username, server_id, ranks } = body;
+
+    user.username = username;
+    user.server_id = server_id;
+    user.ranks = ranks;
+
+    user
+      .save()
+      .then(() => {
+        return res.status(200).json({
+          success: true,
+          id: user._id,
+          message: "User updated!",
+        });
+      })
+      .catch((error) => {
+        return res.status(404).json({
+          error,
+          message: "User not updated!",
+        });
+      });
+  });
+};
