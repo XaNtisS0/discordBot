@@ -8,18 +8,14 @@ const userRouter = require("./routes/user-router.js");
 const app = express();
 const apiPort = 5000;
 
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("Hello world");
+  res.send("I'm alive");
 });
 
-app.use("/api");
-
-app.post("/", (req, res) => {
-  console.log(req.body.username);
-  res.send("send");
-});
+app.use("/api/users", userRouter);
 
 app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`));
