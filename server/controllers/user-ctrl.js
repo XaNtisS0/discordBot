@@ -39,7 +39,26 @@ createUser = async (req, res) => {
     });
   }
 
-  const user = new User(body);
+  const { username, server_id, ranks } = body;
+
+  const server = await Server.findOne(
+    { _id: server_id },
+    (err, foundServer) => {
+      if (err) {
+        return res.status(400).json({ success: false, error: err });
+      }
+
+      if (!foundServer) {
+        return res
+          .status(404)
+          .json({ success: false, error: `Server with this id not found` });
+      }
+
+      return foundServer;
+    }
+  ).catch((err) => console.log(err));
+
+  const user = new User({ username, server_id: server, ranks });
 
   if (!user) {
     return res.status(400).json({ success: false, error: err });
@@ -85,8 +104,29 @@ updateUser = async (req, res) => {
 
     if (username) {
       user.username = username;
-    user.server_id = server_id;
-    user.ranks = ranks;
+    }
+    if (server_id) {
+      const server = await Server.findOne(
+        { _id: server_id },
+        (err, foundServer) => {
+          if (err) {
+            return res.status(400).json({ success: false, error: err });
+          }
+
+          if (!foundServer) {
+            return res
+              .status(404)
+              .json({ success: false, error: `Server with this id not found` });
+          }
+
+          return foundServer;
+        }
+      ).catch((err) => console.log(err));
+      user.server_id = server;
+    }
+    if (ranks && ranks.length) {
+      user.ranks = ranks;
+    }
 
     user
       .save()
