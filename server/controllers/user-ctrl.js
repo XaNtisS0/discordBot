@@ -3,9 +3,9 @@ const Server = require("../models/server-model");
 
 // GET /api/users/
 getUsers = async (req, res) => {
-  await User.find({}, (err, users) => {
-    if (err) {
-      return res.status(400).json({ success: false, error: err });
+  await User.find({}, (error, users) => {
+    if (error) {
+      return res.status(400).json({ success: false, error });
     }
     if (!users.length) {
       return res.status(404).json({ success: false, error: `No users found` });
@@ -16,15 +16,33 @@ getUsers = async (req, res) => {
 
 // GET /api/users/:id
 getUserById = async (req, res) => {
-  await User.findOne({ _id: req.params.id }, (err, user) => {
-    if (err) {
-      return res.status(400).json({ success: false, error: err });
+  await User.findOne({ _id: req.params.id }, (error, user) => {
+    if (error) {
+      return res.status(400).json({ success: false, error });
     }
 
     if (!user) {
       return res.status(404).json({ success: false, error: `User not found` });
     }
     return res.status(200).json({ success: true, data: user });
+  }).catch((err) => console.log(err));
+};
+
+// GET /api/users/server/:id
+getUsersFromServer = async (req, res) => {
+  await User.find({ server_id: req.params.id }, (error, users) => {
+    if (error) {
+      return res.status(400).json({ success: false, error });
+    }
+
+    if (!users) {
+      return res.status(404).json({
+        success: false,
+        error: "There are no users assigned to this server",
+      });
+    }
+
+    return res.status(200).json({ success: true, data: users });
   }).catch((err) => console.log(err));
 };
 
@@ -164,6 +182,7 @@ deleteUser = async (req, res) => {
 module.exports = {
   getUsers,
   getUserById,
+  getUsersFromServer,
   createUser,
   updateUser,
   deleteUser,

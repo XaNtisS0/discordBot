@@ -8,6 +8,8 @@ const router = express.Router();
 router.get("/", UserCtrl.getUsers);
 //get single user
 router.get("/:id", UserCtrl.getUserById);
+//get users assigned to server
+router.get("/server/:id", UserCtrl.getUsersFromServer);
 //post user
 router.post("/", UserCtrl.createUser);
 //update user
