@@ -7,12 +7,12 @@ const router = express.Router();
 //get all users
 router.get("/", UserCtrl.getUsers);
 //get single user
-router.get("/:userId", UserCtrl.getUserById);
-//post user on server
+router.get("/:id", UserCtrl.getUserById);
+//post user
 router.post("/", UserCtrl.createUser);
-//update user on server
-router.put("/:userId", UserCtrl.updateUser);
-//detele user on server
-router.delete("/:userId", UserCtrl.deleteUser);
+//update user
+router.put("/:id", UserCtrl.updateUser);
+//detele user
+router.delete("/:id", UserCtrl.deleteUser);
 
 module.exports = router;
