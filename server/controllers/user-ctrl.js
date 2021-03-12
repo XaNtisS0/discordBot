@@ -1,19 +1,22 @@
 const User = require("../models/user-model");
+const Server = require("../models/server-model");
 
+// GET /api/users/
 getUsers = async (req, res) => {
-  await User.find({}, (err, Users) => {
+  await User.find({}, (err, users) => {
     if (err) {
       return res.status(400).json({ success: false, error: err });
     }
-    if (!Users.length) {
-      return res.status(404).json({ success: false, error: `User not found` });
+    if (!users.length) {
+      return res.status(404).json({ success: false, error: `No users found` });
     }
-    return res.status(200).json({ success: true, data: Users });
+    return res.status(200).json({ success: true, data: users });
   }).catch((err) => console.log(err));
 };
 
+// GET /api/users/:id
 getUserById = async (req, res) => {
-  await User.findOne({ _id: req.params.userId }, (err, user) => {
+  await User.findOne({ _id: req.params.id }, (err, user) => {
     if (err) {
       return res.status(400).json({ success: false, error: err });
     }
@@ -25,7 +28,8 @@ getUserById = async (req, res) => {
   }).catch((err) => console.log(err));
 };
 
-createUser = (req, res) => {
+// POST /api/users
+createUser = async (req, res) => {
   const body = req.body;
 
   if (!body) {
@@ -47,17 +51,18 @@ createUser = (req, res) => {
       return res.status(201).json({
         success: true,
         id: user._id,
-        message: "User created!",
+        message: "User created",
       });
     })
     .catch((error) => {
       return res.status(400).json({
         error,
-        message: "User not created!",
+        message: "User not created due to error",
       });
     });
 };
 
+// PUT /api/users/:id
 updateUser = async (req, res) => {
   const body = req.body;
 
@@ -68,17 +73,18 @@ updateUser = async (req, res) => {
     });
   }
 
-  User.findOne({ _id: req.params.userId }, (err, user) => {
-    if (err) {
+  await User.findOne({ _id: req.params.id }, async (error, user) => {
+    if (error) {
       return res.status(404).json({
-        err,
-        message: "User not found!",
+        error,
+        message: "User not found",
       });
     }
 
     const { username, server_id, ranks } = body;
 
-    user.username = username;
+    if (username) {
+      user.username = username;
     user.server_id = server_id;
     user.ranks = ranks;
 
@@ -88,22 +94,23 @@ updateUser = async (req, res) => {
         return res.status(200).json({
           success: true,
           id: user._id,
-          message: "User updated!",
+          message: "User updated",
         });
       })
       .catch((error) => {
         return res.status(404).json({
           error,
-          message: "User not updated!",
+          message: "User not updated",
         });
       });
   });
 };
 
+// DELETE /api/users/:id
 deleteUser = async (req, res) => {
-  await User.findOneAndDelete({ _id: req.params.userId }, (err, user) => {
-    if (err) {
-      return res.status(400).json({ success: false, error: err });
+  await User.findOneAndDelete({ _id: req.params.id }, (error, user) => {
+    if (error) {
+      return res.status(400).json({ success: false, error });
     }
 
     if (!user) {
@@ -115,9 +122,9 @@ deleteUser = async (req, res) => {
 };
 
 module.exports = {
+  getUsers,
+  getUserById,
   createUser,
   updateUser,
   deleteUser,
-  getUsers,
-  getUserById,
 };
