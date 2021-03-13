@@ -51,8 +51,8 @@ async def on_member_join(member):
     # Get channel with name="bot-log" for logging
     logging_channel = discord.utils.get(guild.channels, name="bot-log")
     if not logging_channel:
-        await guild.create_channel(name="bot-log")
-    logging_channel = discord.utils.get(guild.channels, name="bot-log")
+        created_channel = await guild.create_text_channel("bot-log")
+        logging_channel = created_channel
     server = {}
     # Check which server is the one we want and save info
     for i, d in enumerate(get_servers):
