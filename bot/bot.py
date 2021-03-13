@@ -9,11 +9,11 @@ intents = discord.Intents.default()
 intents.members = True
 client = discord.Client(intents=intents)
 
-api_server = "http://0.0.0.0:5000"
+api_server = "http://api-server:5000"
 webpage = ""
 
-#invite link:
-#https://discord.com/api/oauth2/authorize?client_id=799365421902987305&permissions=469896208&scope=bot
+# invite link:
+# https://discord.com/api/oauth2/authorize?client_id=799365421902987305&permissions=469896208&scope=bot
 
 # Permisions:
 #	Manage roles
@@ -43,7 +43,7 @@ async def on_member_join(member):
         await guild.create_role(name='members-admin')
     admin_role = discord.utils.get(guild.roles, name='members-admin')
     # Get api/servers/
-    get_servers = requests.get(f'{api_server}/servers/').json()
+    get_servers = requests.get(f'{api_server}/api/servers/').json()
     print(get_servers)
     # Get channel with name="bot-log" for logging
     logging_channel = discord.utils.get(guild.channels, name="bot-log")
@@ -58,8 +58,9 @@ async def on_member_join(member):
     if server == {}:
         await logging_channel.send(f'{admin_role.mention} go to {webpage} to add server to bot database.')
     # Get api/{server_id}/users
-    server_id = server['id']
-    get_users = requests.get(f'{api_server}/{server_id}/users').json()
+    server_id = server['_id']
+    get_users = requests.get(
+        f'{api_server}/api/users/server/{server_id}').json()
     # If loged in user is on the list of users then give him the roles from list
     db_user = {}
     for user in get_users:
