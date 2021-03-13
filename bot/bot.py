@@ -1,6 +1,9 @@
 import discord
 import os
 import requests
+from dotenv import load_dotenv
+
+load_dotenv(os.path.join(os.getcwd(), '.env'))
 
 intents = discord.Intents.default()
 intents.members = True
