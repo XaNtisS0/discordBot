@@ -79,13 +79,10 @@ async def on_member_join(member):
         return 0
     user_ranks = db_user['ranks']
     for rank in user_ranks:
-        if rank not in guild.ranks:
-            await guild.create_role(rank)
-            await member.add_roles(discord.utils.get(guild.roles, name=rank))
-        else:
-            await member.add_roles(discord.utils.get(guild.roles, name=rank))
-    # If not then log info about unwanted user with mention to members admin and the unwanted user.
-    #	(f'{moderator_role.mention} Unknown user: {str(member.mention)}')
+        if rank not in guild.roles:
+            await guild.create_role(name=rank)
+        await member.add_roles(discord.utils.get(guild.roles, name=rank))
+
     #	send information to user that he need to contact administrator to change username in whitelist or manually add role
 
     '''organizator_role = discord.utils.get(
