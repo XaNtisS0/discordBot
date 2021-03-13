@@ -11,7 +11,7 @@ getUsers = async (req, res) => {
       return res.status(404).json({ success: false, error: `No users found` });
     }
     return res.status(200).json({ success: true, data: users });
-  }).catch((err) => console.log(err));
+  }).catch((error) => console.log(error));
 };
 
 // GET /api/users/:id
@@ -25,7 +25,7 @@ getUserById = async (req, res) => {
       return res.status(404).json({ success: false, error: `User not found` });
     }
     return res.status(200).json({ success: true, data: user });
-  }).catch((err) => console.log(err));
+  }).catch((error) => console.log(error));
 };
 
 // GET /api/users/server/:id
@@ -43,7 +43,7 @@ getUsersFromServer = async (req, res) => {
     }
 
     return res.status(200).json({ success: true, data: users });
-  }).catch((err) => console.log(err));
+  }).catch((error) => console.log(error));
 };
 
 // POST /api/users
@@ -61,9 +61,9 @@ createUser = async (req, res) => {
 
   const server = await Server.findOne(
     { _id: server_id },
-    (err, foundServer) => {
-      if (err) {
-        return res.status(400).json({ success: false, error: err });
+    (error, foundServer) => {
+      if (error) {
+        return res.status(400).json({ success: false, error });
       }
 
       if (!foundServer) {
@@ -74,12 +74,12 @@ createUser = async (req, res) => {
 
       return foundServer;
     }
-  ).catch((err) => console.log(err));
+  ).catch((error) => console.log(error));
 
   const user = new User({ username, server_id: server, ranks });
 
   if (!user) {
-    return res.status(400).json({ success: false, error: err });
+    return res.status(400).json({ success: false, error: error });
   }
 
   user
@@ -126,9 +126,9 @@ updateUser = async (req, res) => {
     if (server_id) {
       const server = await Server.findOne(
         { _id: server_id },
-        (err, foundServer) => {
-          if (err) {
-            return res.status(400).json({ success: false, error: err });
+        (error, foundServer) => {
+          if (error) {
+            return res.status(400).json({ success: false, error });
           }
 
           if (!foundServer) {
@@ -139,7 +139,7 @@ updateUser = async (req, res) => {
 
           return foundServer;
         }
-      ).catch((err) => console.log(err));
+      ).catch((error) => console.log(error));
       user.server_id = server;
     }
     if (ranks && ranks.length) {
@@ -176,7 +176,7 @@ deleteUser = async (req, res) => {
     }
 
     return res.status(200).json({ success: true, data: user });
-  }).catch((err) => console.log(err));
+  }).catch((error) => console.log(error));
 };
 
 module.exports = {

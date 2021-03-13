@@ -2,9 +2,9 @@ const Server = require("../models/server-model");
 
 // GET /api/servers/
 getServers = async (req, res) => {
-  await Server.find({}, (err, servers) => {
-    if (err) {
-      return res.status(400).json({ success: false, error: err });
+  await Server.find({}, (error, servers) => {
+    if (error) {
+      return res.status(400).json({ success: false, error });
     }
     if (!servers.length) {
       return res
@@ -12,14 +12,14 @@ getServers = async (req, res) => {
         .json({ success: false, error: "No servers found" });
     }
     return res.status(200).json({ success: true, data: servers });
-  }).catch((err) => console.log(err));
+  }).catch((error) => console.log(error));
 };
 
 // GET /api/servers/:id
 getServerById = async (req, res) => {
-  await Server.findOne({ _id: req.params.Id }, (err, server) => {
-    if (err) {
-      return res.status(400).json({ success: false, error: err });
+  await Server.findOne({ _id: req.params.Id }, (error, server) => {
+    if (error) {
+      return res.status(400).json({ success: false, error });
     }
 
     if (!server) {
@@ -29,7 +29,7 @@ getServerById = async (req, res) => {
     }
 
     return res.status(200).json({ success: true, data: server });
-  }).catch((err) => console.log(err));
+  }).catch((error) => console.log(error));
 };
 
 // POST /api/servers/
@@ -46,7 +46,7 @@ createServer = async (req, res) => {
   const server = new Server(body);
 
   if (!server) {
-    return res.status(400).json({ success: false, error: err });
+    return res.status(400).json({ success: false, error });
   }
 
   server
@@ -125,7 +125,7 @@ deleteServer = async (req, res) => {
     }
 
     return res.status(200).json({ success: true, data: server });
-  }).catch((err) => console.log(err));
+  }).catch((error) => console.log(error));
 };
 
 module.exports = {
