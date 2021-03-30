@@ -59,3 +59,28 @@ updateRanksForServer = async (req, res) => {
     }
   );
 };
+
+// backend only create ranks method
+createRanks = async (server_id) => {
+  const server = new AvailableRanks({ server_id, names: [] });
+
+  if (!server) {
+    return res.status(400).json({ success: false, error });
+  }
+
+  server
+    .save()
+    .then(() => {
+      return res.status(201).json({
+        success: true,
+        id: server._id,
+        message: "Server created",
+      });
+    })
+    .catch((error) => {
+      return res.status(400).json({
+        error,
+        message: "Server not created due to error",
+      });
+    });
+};
