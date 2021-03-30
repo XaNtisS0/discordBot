@@ -84,3 +84,21 @@ createRanks = async (server_id) => {
       });
     });
 };
+
+// backend only delete ranks method
+deleteRanksForServer = async (server_id) => {
+  await AvailableRanks.findOneAndDelete(
+    { server_id },
+    (error, ranksForServer) => {
+      if (error) {
+        return { success: false, error };
+      }
+
+      if (!ranksForServer) {
+        return { success: false, error: "Server not found" };
+      }
+
+      return { success: true, data: ranksForServer };
+    }
+  ).catch((error) => console.log(error));
+};
