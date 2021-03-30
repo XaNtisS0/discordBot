@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
 const AvailableRanks = mongoose.Schema({
-  name: { type: [String], required: true },
-  server: {
+  names: { type: [String], required: false },
+  server_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "servers",
     required: true,
