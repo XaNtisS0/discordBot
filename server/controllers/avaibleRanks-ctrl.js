@@ -61,27 +61,28 @@ updateRanksForServer = async (req, res) => {
 };
 
 // backend only create ranks method
-createRanks = async (server_id) => {
+createRanksForServer = async (server_id) => {
   const server = new AvailableRanks({ server_id, names: [] });
 
   if (!server) {
-    return res.status(400).json({ success: false, error });
+    return { success: false, error };
   }
 
   server
     .save()
     .then(() => {
-      return res.status(201).json({
+      return {
         success: true,
         id: server._id,
         message: "Server created",
-      });
+      };
     })
     .catch((error) => {
-      return res.status(400).json({
+      return {
+        success: false,
         error,
         message: "Server not created due to error",
-      });
+      };
     });
 };
 
@@ -101,4 +102,11 @@ deleteRanksForServer = async (server_id) => {
       return { success: true, data: ranksForServer };
     }
   ).catch((error) => console.log(error));
+};
+
+module.exports = {
+  getRanksByServerId,
+  updateRanksForServer,
+  createRanksForServer,
+  deleteRanksForServer,
 };
