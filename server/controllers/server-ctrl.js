@@ -1,4 +1,5 @@
 const Server = require("../models/server-model");
+const Ranks = require("../models/avaibleRanks-model");
 
 // GET /api/servers/
 getServers = async (req, res) => {
@@ -52,6 +53,12 @@ createServer = async (req, res) => {
   server
     .save()
     .then(() => {
+      ranks = Ranks.createRanksForServer(server._id);
+
+      if (!ranks.success) {
+        return res.status(400).json({ success: false, error: ranks });
+      }
+
       return res.status(201).json({
         success: true,
         id: server._id,
@@ -122,6 +129,12 @@ deleteServer = async (req, res) => {
       return res
         .status(404)
         .json({ success: false, error: "Server not found" });
+    }
+
+    ranks = Ranks.deleteRanksForServer(server._id);
+
+    if (!ranks.success) {
+      return res.status(400).json({ success: false, error: ranks });
     }
 
     return res.status(200).json({ success: true, data: server });
