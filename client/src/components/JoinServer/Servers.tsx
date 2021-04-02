@@ -25,8 +25,9 @@ export const Servers: FC<IServers> = ({ servers }) => {
           overflow: hidden;
           height: calc(100vh - (6em + 6px));
           display: flex;
-          align-items: flex-start;
-          justify-content: center;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
         `}
       >
         {servers.map((server, index) => {
