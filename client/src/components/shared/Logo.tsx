@@ -5,9 +5,10 @@ import { underline } from '../../styles/underline';
 
 interface ILogo {
   size: 'big' | 'small';
+  styles: string;
 }
 
-export const Logo: FC<ILogo> = ({ size }) => {
+export const Logo: FC<ILogo> = ({ size, styles }) => {
   const Name = () => {
     return (
       <div className={css({ display: 'flex', alignItems: 'center', flexDirection: 'column' })}>
@@ -18,7 +19,7 @@ export const Logo: FC<ILogo> = ({ size }) => {
   };
 
   return (
-    <div>
+    <div className={styles}>
       <img src={logo} className={css({ width: size === 'big' ? '270px' : '110px' })} />
       {size === 'big' && <Name />}
     </div>
