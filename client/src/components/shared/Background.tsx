@@ -9,7 +9,15 @@ interface IBackground {
 
 export const Background: FC<IBackground> = ({ children }) => {
   return (
-    <div className={css({ backgroundColor: '#343A40', height: '100vh', display: 'grid', placeItems: 'center' })}>
+    <div
+      className={css({
+        zIndex: -10,
+        backgroundColor: '#343A40',
+        height: '100vh',
+        display: 'grid',
+        placeItems: 'center',
+      })}
+    >
       <img src={vector} className={css({ position: 'absolute', top: 0, right: 0 })} />
       <img src={subtract} className={css({ position: 'absolute', bottom: 0, left: 0 })} />
       {children}

@@ -1,11 +1,14 @@
+import { FC } from 'react';
 import { Background } from './components/shared/Background';
-import { Logo } from './components/shared/Logo';
+import { JoinServer } from './pages/JoinServer';
 
-const App = () => {
+const App: FC = () => {
   return (
-    <Background>
-      <Logo size="big" />
-    </Background>
+    <>
+      <Background>
+        <JoinServer />
+      </Background>
+    </>
   );
 };
 

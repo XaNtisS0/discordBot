@@ -12,7 +12,7 @@ export const Logo: FC<ILogo> = ({ size }) => {
     return (
       <div className={css({ display: 'flex', alignItems: 'center', flexDirection: 'column' })}>
         <h1 className={underline}>DISCORD</h1>
-        <h3>AUTO-ADDER</h3>
+        <h4>AUTO-ADDER</h4>
       </div>
     );
   };
