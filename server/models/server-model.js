@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const Server = mongoose.Schema({
   name: { type: String, required: true },
+  logo_url: { type: string, required: false },
   logging: { type: Boolean, required: true, default: false },
 });
 
