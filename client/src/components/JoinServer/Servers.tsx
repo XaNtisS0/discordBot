@@ -1,12 +1,14 @@
 import { css } from '@emotion/css';
 import { FC } from 'react';
 import { IServer, Server } from './Server';
+import { SelectServerFunc } from '../../pages/JoinServer';
 
 interface IServers {
   servers: IServer[];
+  selectServer: SelectServerFunc;
 }
 
-export const Servers: FC<IServers> = ({ servers }) => {
+export const Servers: FC<IServers> = ({ servers, selectServer }) => {
   return (
     <div
       className={css`
@@ -31,7 +33,16 @@ export const Servers: FC<IServers> = ({ servers }) => {
         `}
       >
         {servers.map((server, index) => {
-          return <Server name={server.name} key={index} logoUrl={server.logoUrl} people={server.people}></Server>;
+          return (
+            <Server
+              index={index}
+              selectServer={selectServer}
+              name={server.name}
+              key={index}
+              logoUrl={server.logoUrl}
+              people={server.people}
+            ></Server>
+          );
         })}
       </div>
     </div>

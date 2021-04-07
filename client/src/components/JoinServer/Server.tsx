@@ -1,6 +1,7 @@
 import { css } from '@emotion/css';
 import { FC } from 'react';
 import person from '../../images/person.svg';
+import { SelectServerFunc } from '../../pages/JoinServer';
 
 export interface IServer {
   name: string;
@@ -8,7 +9,12 @@ export interface IServer {
   people: number;
 }
 
-export const Server: FC<IServer> = ({ name, logoUrl, people }) => {
+interface IServerComp extends IServer {
+  index: number;
+  selectServer: SelectServerFunc;
+}
+
+export const Server: FC<IServerComp> = ({ index, name, logoUrl, people, selectServer }) => {
   return (
     <div
       className={css`
@@ -21,8 +27,10 @@ export const Server: FC<IServer> = ({ name, logoUrl, people }) => {
           border-radius: 11px;
           background: linear-gradient(0.25turn, #4158d0, #c850c0);
           padding: 2px;
+          cursor: pointer;
         }
       `}
+      onClick={() => selectServer(index)}
     >
       <div
         className={css`

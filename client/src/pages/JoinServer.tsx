@@ -4,8 +4,10 @@ import { SelectedServer } from '../components/JoinServer/SelectedServer';
 import { Servers } from '../components/JoinServer/Servers';
 import { Logo } from '../components/shared/Logo';
 
+export type SelectServerFunc = (index: number) => void;
+
 export const JoinServer: FC = () => {
-  const [selectedServer] = useState(-1);
+  const [selectedServer, setSelectedServer] = useState(-1);
 
   const servers = [
     {
@@ -14,11 +16,16 @@ export const JoinServer: FC = () => {
       people: 3,
     },
     {
-      name: 'Yees sir',
+      name: 'Ale zabawa',
       logoUrl: 'https://i.etsystatic.com/11475894/r/il/150c46/1089120180/il_570xN.1089120180_mulc.jpg',
-      people: 3,
+      people: 10,
     },
   ];
+
+  const selectServer: SelectServerFunc = (index) => {
+    setSelectedServer(index);
+  };
+
   return (
     <div
       className={css({
@@ -30,8 +37,8 @@ export const JoinServer: FC = () => {
         border: '',
       })}
     >
-      <Servers servers={servers} />
-      {selectedServer < 0 ? <div /> : <SelectedServer />}
+      <Servers servers={servers} selectServer={selectServer} />
+      {selectedServer < 0 ? <div /> : <SelectedServer server={servers[selectedServer]} />}
       <Logo
         styles={css`
           display: flex;
