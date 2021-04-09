@@ -1,7 +1,8 @@
 import { css } from '@emotion/css';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { IServer, Server } from './Server';
 import { SelectServerFunc } from '../../pages/JoinServer';
+import { SearchBar } from '../shared/SearchBar';
 
 interface IServers {
   servers: IServer[];
@@ -9,6 +10,17 @@ interface IServers {
 }
 
 export const Servers: FC<IServers> = ({ servers, selectServer }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState(servers);
+
+  useEffect(() => {
+    setSearchResults(servers.filter((server) => server.name.toLowerCase().includes(searchTerm)));
+  }, [searchTerm]);
+
+  const handleChange = (text: string) => {
+    setSearchTerm(text);
+  };
+
   return (
     <div
       className={css`
@@ -32,7 +44,8 @@ export const Servers: FC<IServers> = ({ servers, selectServer }) => {
           justify-content: flex-start;
         `}
       >
-        {servers.map((server, index) => {
+        <SearchBar handleChange={handleChange} />
+        {searchResults.map((server, index) => {
           return (
             <Server
               index={index}
